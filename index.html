@@ -1,0 +1,397 @@
+html_content = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources.io - All Free Resources in One Place</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        /* Animated Background */
+        .bg-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+            animation: meshMove 20s ease-in-out infinite;
+        }
+        
+        @keyframes meshMove {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-hover:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Search Bar Animation */
+        .search-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .search-glow {
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(90deg, #ff77c6, #7877c6, #78dbff, #ff77c6);
+            background-size: 300% 100%;
+            animation: glowMove 3s linear infinite;
+            border-radius: 9999px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: -1;
+        }
+        
+        .search-container:focus-within .search-glow {
+            opacity: 1;
+        }
+        
+        @keyframes glowMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+        
+        /* Category Cards */
+        .category-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .category-card.active {
+            background: linear-gradient(135deg, rgba(120, 119, 198, 0.4), rgba(255, 119, 198, 0.4));
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Resource Cards */
+        .resource-card {
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Text Gradient */
+        .text-gradient {
+            background: linear-gradient(135deg, #ff77c6, #7877c6, #78dbff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Floating Animation */
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Link Styles */
+        a.resource-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            height: 100%;
+        }
+        
+        .visit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .visit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Grade Tags */
+        .grade-tag {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+        }
+        
+        .grade-tag:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-mesh"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <i class="fas fa-globe text-white text-lg"></i>
+                    </div>
+                    <span class="font-display font-bold text-2xl text-gradient">Resources.io</span>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#gaming" class="text-gray-300 hover:text-white transition">Gaming</a>
+                    <a href="#education" class="text-gray-300 hover:text-white transition">Education</a>
+                    <a href="#apps" class="text-gray-300 hover:text-white transition">Apps</a>
+                    <a href="#books" class="text-gray-300 hover:text-white transition">Books</a>
+                    <a href="#emulation" class="text-gray-300 hover:text-white transition">Emulation</a>
+                </div>
+                
+                <button class="md:hidden text-white text-xl">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 px-4">
+        <div class="max-w-5xl mx-auto text-center">
+            <div class="float mb-8">
+                <span class="glass px-4 py-2 rounded-full text-sm text-gray-300 inline-flex items-center">
+                    <span class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                    100% Free & Legal Resources
+                </span>
+            </div>
+            
+            <h1 class="font-display text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                All Resources in <br>
+                <span class="text-gradient">One Place</span>
+            </h1>
+            
+            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+                Discover free games, educational materials, apps, books, and tools. All verified, safe, and legal resources in one curated portal.
+            </p>
+            
+            <!-- Search Bar -->
+            <div class="search-container max-w-2xl mx-auto mb-8">
+                <div class="search-glow"></div>
+                <div class="glass rounded-full p-2 flex items-center">
+                    <i class="fas fa-search text-gray-400 ml-4 text-xl"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput"
+                        placeholder="Search games, study materials, apps..." 
+                        class="w-full bg-transparent border-none outline-none px-4 py-3 text-white placeholder-gray-500"
+                        onkeyup="searchResources(this.value)"
+                    >
+                </div>
+            </div>
+            
+            <!-- Quick Tags -->
+            <div class="flex flex-wrap justify-center gap-3 text-sm">
+                <span class="text-gray-500">Popular:</span>
+                <button onclick="filterByTag('gaming')" class="glass px-4 py-1 rounded-full hover:bg-white/10 transition cursor-pointer">Poki Games</button>
+                <button onclick="filterByTag('cbse')" class="glass px-4 py-1 rounded-full hover:bg-white/10 transition cursor-pointer">CBSE Class 5-12</button>
+                <button onclick="filterByTag('emulator')" class="glass px-4 py-1 rounded-full hover:bg-white/10 transition cursor-pointer">Emulators</button>
+                <button onclick="filterByTag('ebooks')" class="glass px-4 py-1 rounded-full hover:bg-white/10 transition cursor-pointer">Free E-Books</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gaming Section -->
+    <section id="gaming" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-2xl">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <div>
+                    <h2 class="font-display text-3xl font-bold">Free Online Gaming</h2>
+                    <p class="text-gray-400">Play instantly without downloads</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Poki -->
+                <a href="https://poki.com" target="_blank" class="resource-link">
+                    <div class="resource-card glass rounded-2xl p-6 h-full hover:bg-white/10 transition cursor-pointer group">
+                        <div class="w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-red-500 to-pink-600 flex items-center justify-center text-3xl group-hover:scale-110 transition">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3 class="font-semibold text-xl mb-2">Poki</h3>
+                        <p class="text-gray-400 text-sm mb-4">Thousands of free online games. No downloads, no login required. Action, puzzle, racing, and more.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs glass px-3 py-1 rounded-full">Web</span>
+                            <span class="text-blue-400 text-sm font-semibold">Play Now <i class="fas fa-external-link-alt ml-1"></i></span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- CrazyGames -->
+                <a href="https://crazygames.com" target="_blank" class="resource-link">
+                    <div class="resource-card glass rounded-2xl p-6 h-full hover:bg-white/10 transition cursor-pointer group">
+                        <div class="w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-orange-500 to-yellow-600 flex items-center justify-center text-3xl group-hover:scale-110 transition">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="font-semibold text-xl mb-2">CrazyGames</h3>
+                        <p class="text-gray-400 text-sm mb-4">High-quality browser games including 3D shooters, racing, and multiplayer games.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs glass px-3 py-1 rounded-full">Web</span>
+                            <span class="text-blue-400 text-sm font-semibold">Play Now <i class="fas fa-external-link-alt ml-1"></i></span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Cool Math Games -->
+                <a href="https://coolmathgames.com" target="_blank" class="resource-link">
+                    <div class="resource-card glass rounded-2xl p-6 h-full hover:bg-white/10 transition cursor-pointer group">
+                        <div class="w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-3xl group-hover:scale-110 transition">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="font-semibold text-xl mb-2">Cool Math Games</h3>
+                        <p class="text-gray-400 text-sm mb-4">Educational games that make math fun. Strategy, logic, and number games for all ages.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs glass px-3 py-1 rounded-full">Educational</span>
+                            <span class="text-blue-400 text-sm font-semibold">Play Now <i class="fas fa-external-link-alt ml-1"></i></span>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- itch.io -->
+                <a href="https://itch.io/games/free" target="_blank" class="resource-link">
+                    <div class="resource-card glass rounded-2xl p-6 h-full hover:bg-white/10 transition cursor-pointer group">
+                        <div class="w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-red-600 to-pink-700 flex items-center justify-center text-3xl group-hover:scale-110 transition">
+                            <i class="fas fa-ghost"></i>
+                        </div>
+                        <h3 class="font-semibold text-xl mb-2">itch.io Free</h3>
+                        <p class="text-gray-400 text-sm mb-4">Indie games from independent developers. Unique, creative games you won't find elsewhere.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs glass px-3 py-1 rounded-full">Indie</span>
+                            <span class="text-blue-400 text-sm font-semibold">Browse <i class="fas fa-external-link-alt ml-1"></i></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section - CBSE Focus -->
+    <section id="education" class="py-20 px-4 bg-black/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-2xl">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h2 class="font-display text-3xl font-bold">CBSE Education (Class 5-12)</h2>
+                    <p class="text-gray-400">Free study materials, NCERT solutions, and video lessons</p>
+                </div>
+            </div>
+            
+            <!-- Grade Filter -->
+            <div class="flex flex-wrap gap-2 mb-8">
+                <button onclick="filterGrade('all')" class="grade-tag px-4 py-2 rounded-full text-sm active bg-white/20">All Classes</button>
+                <button onclick="filterGrade('5-8')" class="grade-tag px-4 py-2 rounded-full text-sm">Class 5-8</button>
+                <button onclick="filterGrade('9-10')" class="grade-tag px-4 py-2 rounded-full text-sm">Class 9-10</button>
+                <button onclick="filterGrade('11-12')" class="grade-tag px-4 py-2 rounded-full text-sm">Class 11-12</button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="educationGrid">
+                <!-- LearnCBSE -->
+                <a href="https://www.learncbse.in" target="_blank" class="resource-link" data-grade="9-10 11-12">
+                    <div class="resource-card glass rounded-2xl p-6 h-full hover:bg-white/10 transition cursor-pointer group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-2xl">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <span class="glass px-3 py-1 rounded-full text-xs">NCERT Solutions</span>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2">LearnCBSE</h3>
+                        <p class="text-gray-400 text-sm mb-4">Complete NCERT solutions for Class 1-12. Maths, Science, English, and all subjects with detailed explanations.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded">Maths</span>
+                            <span class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded">Science</span>
+                            <span class="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded">English</span>
+                        </div>
+                        <span class="text-blue-400 text-sm font-semibold">Visit Site <i class="fas fa-external-link-alt ml-1"></i></span>
+                    </div>
+                </a>
+                
+                <!-- Magnet Brains -->
+                <a href="https://www.magnetbrains.com" target="_blank" class="resource-link" data-grade="5-8 9-10 11-12">
+                    <div class="resource-card glass rounded-2xl p-6 h-full hover:bg-white/10 transition cursor-pointer group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center text-2xl">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <span class="glass px-3 py-1 rounded-full text-xs">100% Free</span>
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2">Magnet Brains</h3>
+                        <p class="text-gray-400 text-sm mb-4">India's best free online school courses. CBSE English Medium, complete video courses for all classes.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="text-xs bg-red-500/20 text-red-300 px-2 py-1 rounded">Video Lessons</span>
+                            <span class="text-xs bg-orange-500/20 text-orange-300 px-2 py-1 rounded">CBSE</span>
+                        </div>
+                        <span class="text-blue-400 text-sm font-semibold">Watch Now <i class="fas fa-external-link-alt ml-1"></i></span>
+                    </div>
+                </a>
+                
+                <!-- Khan Academy -->
+                <a href="https://www.khanacademy.org" target="_blank" class="resource-link" data-grade="5-8 9-10 11-12">
+                    <div class="resource-card glass rounded-2xl p-6 h-full hover:bg-white/10 transition cursor-pointer group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-2xl">
+                      
